@@ -1,0 +1,19 @@
+on:
+  pull_request:
+    branches:
+      - master
+#  push:
+jobs:
+  ast_scan:
+    runs-on: ubuntu-latest
+    name: Checkmarx scan run
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run scan
+        uses: ./ # Uses an action in the root directory
+        id: scan
+        with:
+          github_repo_token: ${{ secrets.GITHUB_TOKEN }}

@@ -1,0 +1,44 @@
+name: 'Checkmarx AST'
+author: 'David Cohen'
+description: 'Find vulnerabilities in your code using Checkmarx AST solution'
+inputs:
+  ast_uri:
+    description: 'AST uri'
+    required: true
+  ast_authentication_uri:
+    description: 'AST authentication uri'
+    required: true
+  ast_access_key_id:
+    description: 'AST access key id'
+    required: true
+  ast_access_key_secret:
+    description: 'AST access key secret'
+    required: true
+  github_repo_token:
+    description: 'GitHub repository token'
+    required: true
+  scan_complete_timeout_secs:
+    description: 'Timeout of scan completion in seconds'
+    required: false
+    default: '200'
+  high_results_threshold:
+    description: 'Scan results threshold for high severity vulnerabilities'
+    required: false
+    default: '0'
+  medium_results_threshold:
+    description: 'Scan results threshold for medium severity vulnerabilities'
+    required: false
+    default: '-1'
+  low_results_threshold:
+    description: 'Scan results threshold for low severity vulnerabilities'
+    required: false
+    default: '-1'
+outputs:
+  results:
+    description: 'Scan results'
+runs:
+  using: 'node12'
+  main: 'src/index.js'
+branding:
+  icon: 'check-square'
+  color: 'green'
