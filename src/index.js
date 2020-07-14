@@ -34,7 +34,7 @@ const inputs = {
     astAccessKeyId: core.getInput('ast_access_key_id', { required: true }),
     astAccessKeySecret: core.getInput('ast_access_key_secret', { required: true }),
     githubRepoToken: core.getInput('github_repo_token', { required: true }),
-    scanCompleteTimeoutSecs: core.getInput('scan_complete_timeout_secs', { required: true }),
+    actionScanCompleteTimeoutSecs: core.getInput('action_scan_complete_timeout_secs', { required: true }),
     highResultsThreshold: core.getInput('high_results_threshold', { required: true }),
     mediumResultsThreshold: core.getInput('medium_results_threshold', { required: true }),
     lowResultsThreshold: core.getInput('low_results_threshold', { required: true }),
@@ -57,7 +57,7 @@ async function createScan() {
     core.info(`Scan #${scan.id} created`);
 
     const start = Date.now();
-    await ast.waitForScanToComplete(scan.id, inputs.scanCompleteTimeoutSecs * 1000);
+    await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
     const results = await ast.getResultsByScanID(scan.id);
