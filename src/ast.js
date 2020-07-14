@@ -151,7 +151,8 @@ class Ast {
         const url = format({
             host: this.#config.astResultsURI,
             query:  {
-                'scan-id': scanID
+                'scan-id': scanID,
+                limit: 500 // TODO Fetch without limit
             }
         });
 
