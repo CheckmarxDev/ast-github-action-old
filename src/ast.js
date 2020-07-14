@@ -147,13 +147,31 @@ class Ast {
             .finally(() => clearInterval(interval));
     }
 
-    async getResultsByScanID(scanID) {
+    async getScanSummaryByScanID(scanID) {
+        const url = format({
+            host: this.#config.astScanSummaryURI,
+            query: {
+                'scan-ids': [scanID],
+                'include-severity-status': false,
+            },
+        });
+
+        try {
+            const res = await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+            return res.scansSummaries[0];
+        } catch (e) {
+            throw wrapError(e, 'Failed to get scan summary');
+        }
+    }
+
+    async getResultsByScanID(scanID, limit) {
         const url = format({
             host: this.#config.astResultsURI,
             query:  {
+                limit,
+                sort: [ '+status', '-severity'],
                 'scan-id': scanID,
-                limit: 500 // TODO Fetch without limit
-            }
+            },
         });
 
         try {

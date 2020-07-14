@@ -7,6 +7,7 @@ const ast = init({
     astAccessKeySecret: '',
     astScansURI: '',
     astResultsURI: '',
+    astScanSummaryURI: '',
     githubRepoToken: '',
     githubRepo: '',
     githubRepoUrl: '',

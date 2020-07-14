@@ -44,6 +44,7 @@ const constants = {
     astAuthenticationUri : joinURLs(inputs.astUri, 'auth/realms/organization/protocol/openid-connect/token'),
     astScansURI: joinURLs(inputs.astUri, 'api/scans'),
     astResultsURI: joinURLs(inputs.astUri, 'api/results'),
+    astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
     astResultsView: 'bfl',
 };
 
@@ -60,12 +61,16 @@ async function createScan() {
     await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
-    const results = await ast.getResultsByScanID(scan.id);
+    const [scanSummary, results] = await Promise.all([
+        ast.getScanSummaryByScanID(scan.id),
+        ast.getResultsByScanID(scan.id, 50), // 50 is the annotation limit in github
+    ]);
     core.setOutput('results', results);
     return {
         scanID: scan.id,
         results: results.results,
         resultsURI: `${inputs.astUri}#/projects/results/${projectID}/scans/${scan.id}/${constants.astResultsView}`,
+        severityCounters: scanSummary.severityCounters,
     };
 }
 
@@ -81,12 +86,13 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, resultsURI }) {
+async function writeScanReport({ scanID, results, resultsURI, severityCounters }) {
     const startDate = new Date().toISOString();
-    const resultsBySeverity = results.reduce((a, r) => {
-        a[r.severity]++;
+    const resultsBySeverity = severityCounters.reduce((a, r) => {
+        a[r.severity] = r.counter;
         return a;
     }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
+
     let succeed = true;
     let violations = 0;
     if (inputs.highResultsThreshold > -1 && resultsBySeverity.HIGH > inputs.highResultsThreshold) {
@@ -118,15 +124,8 @@ ${succeed ? successHead : failureHead}`;
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 [<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})`;
-    const annotations = results.sort((a, b) => {
-        const order = {
-            HIGH: 3,
-            MEDIUM: 2,
-            LOW: 1,
-            INFO: 0
-        };
-        return order[b.severity] - order[a.severity]
-    }).map(r => {
+
+    const annotations = results.map(r => {
         const startNode = r.nodes[0];
         return {
             path: startNode.fileName.substring(1),
