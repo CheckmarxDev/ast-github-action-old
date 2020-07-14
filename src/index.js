@@ -133,7 +133,7 @@ ${succeed ? successHead : failureHead}`;
             end_line: startNode.line,
             annotation_level: r.severity === 'INFO' ?  'notice' : 'warning',
             title: r.queryName,
-            message: `${r.severity} (source node)`,
+            message: `${r.severity} & ${r.status} (source node)`,
         }
     });
 
