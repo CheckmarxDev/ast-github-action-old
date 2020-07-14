@@ -17,8 +17,8 @@ inputs:
   github_repo_token:
     description: 'GitHub repository token'
     required: true
-  scan_complete_timeout_secs:
-    description: 'Timeout of scan completion in seconds'
+  action_scan_complete_timeout_secs:
+    description: 'Timeout of the action scan completion in seconds'
     required: false
     default: '200'
   high_results_threshold:

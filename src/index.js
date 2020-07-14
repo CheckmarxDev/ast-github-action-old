@@ -156,9 +156,9 @@ ${succeed ? successHead : failureHead}`;
                 annotations,
             },
             actions: [{
-                label: 'Open Issues',
-                description: 'Open GitHub issues',
-                identifier: 'open-issues',
+                label: 'Generate Issues',
+                description: 'Generate GitHub issues',
+                identifier: 'generate-issues',
             }]
         });
     } catch (e) {
