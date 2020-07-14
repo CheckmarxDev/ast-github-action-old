@@ -133,8 +133,8 @@ ${succeed ? successHead : failureHead}`;
             start_line: startNode.methodLine,
             end_line: startNode.line,
             annotation_level: r.severity === 'INFO' ?  'notice' : 'warning',
-            message: r.severity,
             title: r.queryName,
+            message: `${r.severity} (source node)`,
         }
     });
 
