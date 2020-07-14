@@ -169,7 +169,7 @@ class Ast {
             host: this.#config.astResultsURI,
             query:  {
                 limit,
-                sort: [ '+status', '-severity'],
+                sort: [ '-status', '-severity'],
                 'scan-id': scanID,
             },
         });

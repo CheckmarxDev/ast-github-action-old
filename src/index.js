@@ -69,8 +69,9 @@ async function createScan() {
     return {
         scanID: scan.id,
         results: results.results,
+        resultsTotalCount: results.totalCount,
         resultsURI: `${inputs.astUri}#/projects/results/${projectID}/scans/${scan.id}/${constants.astResultsView}`,
-        severityCounters: scanSummary.severityCounters,
+        resultsSeverityCounters: scanSummary.severityCounters,
     };
 }
 
@@ -86,9 +87,9 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, resultsURI, severityCounters }) {
+async function writeScanReport({ scanID, results, resultsTotalCount, resultsURI, resultsSeverityCounters }) {
     const startDate = new Date().toISOString();
-    const resultsBySeverity = severityCounters.reduce((a, r) => {
+    const resultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
         return a;
     }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
@@ -118,7 +119,7 @@ async function writeScanReport({ scanID, results, resultsURI, severityCounters }
     const summary =
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
-    const text = `**${results.length} Vulnerabilities**<br>
+    const text = `**${resultsTotalCount} Vulnerabilities**<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
