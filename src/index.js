@@ -45,7 +45,6 @@ const constants = {
     astScansURI: joinURLs(inputs.astUri, 'api/scans'),
     astResultsURI: joinURLs(inputs.astUri, 'api/results'),
     astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
-    astResultsView: 'bfl',
 };
 
 const config = Object.assign({}, context, inputs, constants);
@@ -70,13 +69,13 @@ async function createScan() {
         scanID: scan.id,
         results: results.results,
         resultsTotalCount: results.totalCount,
-        resultsURI: `${inputs.astUri}#/projects/results/${projectID}/scans/${scan.id}/${constants.astResultsView}`,
+        resultsURI: `${inputs.astUri}#/projects/${projectID}/results/`,
         resultsSeverityCounters: scanSummary.severityCounters,
     };
 }
 
 function getReportResources() {
-    // TODO: Change to get from the ui
+    // TODO: Change to get from the server
     return {
         highIcon: 'https://github-actions-pics.s3.us-east-2.amazonaws.com/high.svg',
         mediumIcon: 'https://github-actions-pics.s3.us-east-2.amazonaws.com/medium.svg',
