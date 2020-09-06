@@ -165,7 +165,7 @@ ${succeed ? successHead : failureHead}`;
     }
 
     if (!succeed) {
-        throw new Error('${violations} Policy Violations');
+        throw new Error(`Found ${violations} Policy Violations`);
     }
 }
 
