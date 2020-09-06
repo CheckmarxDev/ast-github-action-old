@@ -69,7 +69,7 @@ async function createScan() {
         scanID: scan.id,
         results: results.results,
         resultsTotalCount: results.totalCount,
-        resultsURI: `${inputs.astUri}#/projects/${projectID}/results/`,
+        resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results/`),
         resultsSeverityCounters: scanSummary.severityCounters,
     };
 }
