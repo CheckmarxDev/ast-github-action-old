@@ -139,7 +139,7 @@ ${succeed ? successHead : failureHead}`;
 
     const octokit  = github.getOctokit(inputs.githubRepoToken);
     try {
-        return await octokit.checks.create({
+        await octokit.checks.create({
             ...context.repo,
             name: 'Checkmarx scan results',
             head_sha: context.githubCommitHash,
@@ -162,6 +162,10 @@ ${succeed ? successHead : failureHead}`;
         });
     } catch (e) {
         throw wrapError(e, 'Failed to report scan results');
+    }
+
+    if (!succeed) {
+        throw new Error('${violations} Policy Violations');
     }
 }
 
