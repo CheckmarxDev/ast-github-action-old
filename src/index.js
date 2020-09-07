@@ -44,6 +44,7 @@ const constants = {
     astAuthenticationUri : joinURLs(inputs.astUri, 'auth/realms/organization/protocol/openid-connect/token'),
     astScansURI: joinURLs(inputs.astUri, 'api/scans'),
     astResultsURI: joinURLs(inputs.astUri, 'api/results'),
+    astCargoResultsURI: joinURLs(inputs.astUri, 'api/cargo/results'),
     astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
 };
 
@@ -60,14 +61,19 @@ async function createScan() {
     await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
-    const [scanSummary, results] = await Promise.all([
+    const [scanSummary, results, cargoResults] = await Promise.all([
         ast.getScanSummaryByScanID(scan.id),
         ast.getResultsByScanID(scan.id, 50), // 50 is the annotation limit in github
+        ast.getCargoResultsByScanID(scan.id), // 50 is the annotation limit in github
+
     ]);
     core.setOutput('results', results);
+    core.info(`cargoResults ${cargoResults}`);
+
     return {
         scanID: scan.id,
         results: results.results,
+        cargoResults: cargoResults,
         resultsTotalCount: results.totalCount,
         resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
         resultsSeverityCounters: scanSummary.severityCounters,
