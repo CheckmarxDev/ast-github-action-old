@@ -68,13 +68,13 @@ async function createScan() {
 
     ]);
     core.setOutput('results', results);
-    core.info(`cargoResults ${cargoResults}`);
+    core.info(`cargoResults total ${cargoResults.length}`);
 
     return {
         scanID: scan.id,
         results: results.results,
         cargoResults: cargoResults,
-        resultsTotalCount: results.totalCount,
+        resultsTotalCount: results.totalCount + cargoResults.length,
         resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
         resultsSeverityCounters: scanSummary.severityCounters,
     };
