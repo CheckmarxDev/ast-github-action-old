@@ -180,6 +180,18 @@ class Ast {
             throw wrapError(e, 'Failed to get results');
         }
     }
+
+    async getCargoResultsByScanID(scanID) {
+        const url = format({
+            host: this.#config.astCargoResultsURI + '/' + scanID,
+        });
+
+        try {
+            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+        } catch (e) {
+            throw wrapError(e, 'Failed to get results');
+        }
+    }
 }
 
 const ast = new Ast();
