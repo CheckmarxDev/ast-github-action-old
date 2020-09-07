@@ -126,23 +126,45 @@ async function writeScanReport({ scanID, results, resultsSASTCount, resultsCargo
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
     const text = `**${resultsSASTCount + resultsCargoCount} Vulnerabilities**<br>
-    <table style="width:100%">
-  <tr>
-    *${resultsSASTCount} SAST Vulnerabilities*<br>
+<table style="width:100%">
+<tr>
+    <th>SAST</th>
+    <th>SCA</th>
+    <th>Container</th> 
+    <th>IaC</th>
+  </tr>
+<tr>
+     *${resultsSASTCount} Vulnerabilities*<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
   </tr>
-  <tr>
-   *${resultsCargoCount} Container Vulnerabilities*<br>
+<tr>
+      *${resultsSASTCount} Vulnerabilities*<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-[<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})
   </tr>
-</table>`;
+<tr>
+ *${resultsCargoCount} Vulnerabilities*<br>
+<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+  </tr>
+<tr>
+      *${resultsSASTCount} Vulnerabilities*<br>
+<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+  </tr>
+</table>
+
+
+[<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})`;
    
 
 
