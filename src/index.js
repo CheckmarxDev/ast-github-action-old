@@ -134,32 +134,40 @@ ${succeed ? successHead : failureHead}`;
     <th>IaC</th>
   </tr>
 <tr>
-     *${resultsSASTCount} Vulnerabilities*<br>
+<td>
+     ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+</td>
   </tr>
 <tr>
-      *${resultsSASTCount} Vulnerabilities*<br>
+<td>
+     ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+</td>
   </tr>
 <tr>
- *${resultsCargoCount} Vulnerabilities*<br>
+<td>
+ ${resultsCargoCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+</td>
   </tr>
 <tr>
-      *${resultsSASTCount} Vulnerabilities*<br>
+<td>
+      ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+</td>
   </tr>
 </table>
 
