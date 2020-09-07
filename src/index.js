@@ -141,8 +141,7 @@ ${succeed ? successHead : failureHead}`;
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 </td>
-  </tr>
-<tr>
+
 <td>
      ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
@@ -150,8 +149,7 @@ ${succeed ? successHead : failureHead}`;
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 </td>
-  </tr>
-<tr>
+
 <td>
  ${resultsCargoCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
@@ -159,8 +157,7 @@ ${succeed ? successHead : failureHead}`;
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 </td>
-  </tr>
-<tr>
+
 <td>
       ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
