@@ -74,7 +74,8 @@ async function createScan() {
         scanID: scan.id,
         results: results.results,
         cargoResults: cargoResults,
-        resultsTotalCount: results.totalCount + cargoResults.length,
+        resultsSASTCount: results.totalCount,
+        resultsCargoCount: cargoResults.length,
         resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
         resultsSeverityCounters: scanSummary.severityCounters,
     };
@@ -124,7 +125,13 @@ async function writeScanReport({ scanID, results, resultsTotalCount, resultsURI,
     const summary =
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
-    const text = `**${resultsTotalCount} Vulnerabilities**<br>
+    const text = `**${resultsSASTCount + resultsCargoCount} Vulnerabilities**<br>
+    *${resultsSASTCount} SAST Vulnerabilities*<br>
+<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+*${resultsCargoCount} Container Vulnerabilities*<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
