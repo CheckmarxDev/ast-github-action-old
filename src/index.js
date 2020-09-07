@@ -126,17 +126,25 @@ async function writeScanReport({ scanID, results, resultsSASTCount, resultsCargo
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
     const text = `**${resultsSASTCount + resultsCargoCount} Vulnerabilities**<br>
+    <table style="width:100%">
+  <tr>
     *${resultsSASTCount} SAST Vulnerabilities*<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-*${resultsCargoCount} Container Vulnerabilities*<br>
+  </tr>
+  <tr>
+   *${resultsCargoCount} Container Vulnerabilities*<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-[<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})`;
+[<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})
+  </tr>
+</table>`;
+   
+
 
     const annotations = results.map(r => {
         const startNode = r.nodes[0];
