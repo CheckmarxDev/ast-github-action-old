@@ -93,7 +93,7 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, resultsTotalCount, resultsURI, resultsSeverityCounters }) {
+async function writeScanReport({ scanID, results, resultsSASTCount, resultsCargoCount , resultsURI, resultsSeverityCounters }) {
     const startDate = new Date().toISOString();
     const resultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
