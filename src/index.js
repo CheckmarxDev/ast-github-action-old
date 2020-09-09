@@ -53,7 +53,8 @@ const ast = init(config);
 
 async function createScan() {
     // FIXME remove the replace once the slash would not interrupt the delete project
-    const projectID = context.githubRepo.replace('/', '-') + context.githubCommitHash;
+    const projectID = context.githubRepo.replace('/', '-') + " " + context.githubCommitHash.substring(0, 7);
+;
     const scan = await ast.createScan(projectID);
     core.info(`Scan #${scan.id} created`);
 
