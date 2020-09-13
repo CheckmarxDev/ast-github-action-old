@@ -63,21 +63,25 @@ async function createScan() {
     await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
-    const [scanSummary, results, cargoResults] = await Promise.all([
+    const [scanSummary, results, cargoResults, iceResults] = await Promise.all([
         ast.getScanSummaryByScanID(scan.id),
         ast.getResultsByScanID(scan.id, 50), // 50 is the annotation limit in github
         ast.getCargoResultsByScanID(scan.id), // 50 is the annotation limit in github
+        ast.getIceResultsByScanID(scan.id), 
 
     ]);
     core.setOutput('results', results);
     core.info(`cargoResults total ${cargoResults.length}`);
+    core.info(`iceResults total ${iceResults.length}`);
 
     return {
         scanID: scan.id,
         results: results.results,
         cargoResults: cargoResults,
+        iceResults: iceResults,
         resultsSASTCount: results.totalCount,
         resultsCargoCount: cargoResults.length,
+        resultsIceCount: iceResults.length,
         resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
         resultsSeverityCounters: scanSummary.severityCounters,
     };
@@ -95,7 +99,7 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, resultsSASTCount, resultsCargoCount , resultsURI, resultsSeverityCounters }) {
+async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters }) {
     const startDate = new Date().toISOString();
     const resultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
@@ -128,31 +132,47 @@ async function writeScanReport({ scanID, results, resultsSASTCount, resultsCargo
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
     const text = `**${resultsSASTCount + resultsCargoCount} Vulnerabilities**<br>
+    <table style="width:100%">
+<tr>
+    <th>SAST                    </th>
+    <th>SCA                    </th>
+    <th>Container                    </th> 
+    <th>IaC                    </th>
+  </tr>
+<tr>
+<td>
+     ${resultsSASTCount} Vulnerabilities<br>
 
-     *SAST ${resultsSASTCount} Vulnerabilities*<br>
+
+<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+</td>
+<td>
+     ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 
-     *SCA ${resultsSASTCount} Vulnerabilities*<br>
+</td>
+<td>
+ ${resultsCargoCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-
- *Container ${resultsCargoCount} Vulnerabilities*<br>
+</td>
+<td>
+      ${resultsSASTCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-
-      *IaC ${resultsSASTCount} Vulnerabilities*<br>
-<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
-
+</td>
+  </tr>
+</table>
 
 
 [<img align='left' src='${resources.linkIcon}'/>View more details on Checkmarx AST](${resultsURI})`;
