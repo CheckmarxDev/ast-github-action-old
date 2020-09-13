@@ -45,6 +45,7 @@ const constants = {
     astScansURI: joinURLs(inputs.astUri, 'api/scans'),
     astResultsURI: joinURLs(inputs.astUri, 'api/results'),
     astCargoResultsURI: joinURLs(inputs.astUri, 'api/cargo/results'),
+    astIceResultsURI: joinURLs(inputs.astUri, 'api/ice/results'),
     astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
 };
 
