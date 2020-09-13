@@ -158,32 +158,32 @@ ${succeed ? successHead : failureHead}`;
      ${resultsSASTCount} Vulnerabilities<br>
 
 
-<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+<img align='left' src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${sastResultsBySeverity.INFO} Info <br>
 </td>
 <td>
-     ${resultsSASTCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+     0 Vulnerabilities<br>
+<img align='left' src='${resources.highIcon}'/>0 High <br>
+<img align='left' src='${resources.mediumIcon}'/>0 Medium <br>
+<img align='left' src='${resources.lowIcon}'/>0 Low <br>
+<img align='left' src='${resources.infoIcon}'/>0 Info <br>
 
 </td>
 <td>
  ${resultsCargoCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+<img align='left' src='${resources.highIcon}'/>${cargoResultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${cargoResultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${cargoResultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${cargoResultsBySeverity.INFO} Info <br>
 </td>
 <td>
       ${resultsIceCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
+<img align='left' src='${resources.highIcon}'/>${iceResultsBySeverity.HIGH} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${iceResultsBySeverity.MEDIUM} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${iceResultsBySeverity.LOW} Low <br>
+<img align='left' src='${resources.infoIcon}'/>${iceResultsBySeverity.INFO} Info <br>
 </td>
   </tr>
 </table>
