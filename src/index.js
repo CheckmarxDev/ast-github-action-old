@@ -171,37 +171,79 @@ ${succeed ? successHead : failureHead}`;
   </tr>
 <tr>
 <td>
-     ${resultsSASTCount} Vulnerabilities </br>
-
-
-<img  src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High </br>
-<img  src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium  </br>
-<img  src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low </br>
-<img  src='${resources.infoIcon}'/>${sastResultsBySeverity.INFO} Info </br>
+${resultsSASTCount} Vulnerabilities 
 </td>
 <td>
-     0 Vulnerabilities
-<img  src='${resources.highIcon}'/>0 High </br>
-<img  src='${resources.mediumIcon}'/>0 Medium </br>
-<img  src='${resources.lowIcon}'/>0 Low </br>
-<img  src='${resources.infoIcon}'/>0 Info </br>
-
+0 Vulnerabilities 
 </td>
 <td>
- ${resultsCargoCount} Vulnerabilities<br>
+${resultsCargoCount} Vulnerabilities 
+</td>
+<td>
+${resultsIceCount} Vulnerabilities 
+</td>  
+</tr>
+
+<tr>
+<td>
+<img  src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High 
+</td>
+<td>
+<img  src='${resources.highIcon}'/>0 High 
+</td>
+<td>
 <img  src='${resources.highIcon}'/>${cargoHResults} High </br>
+</td>
+<td>
+<img  src='${resources.highIcon}'/>${iceHResults} High </br>
+</td>  
+</tr>
+
+<tr>
+<td>
+<img  src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium 
+</td>
+<td>
+<img  src='${resources.mediumIcon}'/>0 Medium 
+</td>
+<td>
 <img  src='${resources.mediumIcon}'/>${cargoMResults} Medium </br>
+</td>
+<td>
+<img  src='${resources.mediumIcon}'/>${iceMResults} Medium </br>
+</td>  
+</tr>
+
+<tr>
+<td>
+<img  src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low 
+</td>
+<td>
+<img  src='${resources.lowIcon}'/>0 Low 
+</td>
+<td>
 <img  src='${resources.lowIcon}'/>${cargoLResults} Low </br>
+</td>
+<td>
+<img  src='${resources.lowIcon}'/>${iceLResults} Low </br>
+</td>  
+</tr>
+
+<tr>
+<td>
+<img  src='${resources.infoIcon}'/>${sastResultsBySeverity.INFO} Info 
+</td>
+<td>
+<img  src='${resources.infoIcon}'/>0 Info 
+</td>
+<td>
 <img  src='${resources.infoIcon}'/>0 Info </br>
 </td>
 <td>
-      ${resultsIceCount} Vulnerabilities<br>
-<img  src='${resources.highIcon}'/>${iceHResults} High </br>
-<img  src='${resources.mediumIcon}'/>${iceMResults} Medium </br>
-<img  src='${resources.lowIcon}'/>${iceLResults} Low </br>
 <img  src='${resources.infoIcon}'/>0 Info </br>
-</td>
-  </tr>
+</td>  
+</tr>
+
 </table>
 
 
