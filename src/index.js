@@ -116,13 +116,13 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
         return x.almSeverity == 'High';
     }).length
 
-    const iceLResults = cargoResults.filter(function(x) {
+    const iceLResults = iceResults.filter(function(x) {
         return x.almSeverity == 'LOW';
     }).length
-    const iceMResults = cargoResults.filter(function(x) {
+    const iceMResults = iceResults.filter(function(x) {
         return x.almSeverity == 'MEDIUM';
     }).length
-    const iceHResults = cargoResults.filter(function(x) {
+    const iceHResults = iceResults.filter(function(x) {
         return x.almSeverity == 'HIGH';
     }).length
 
@@ -158,10 +158,10 @@ ${succeed ? successHead : failureHead}`;
     const text = `**${resultsSASTCount + resultsCargoCount + resultsIceCount} Vulnerabilities**<br>
     <table style="width:100%">
 <tr>
-    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SAST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
-    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Container&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th> 
-    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IaC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>**************SAST**************</th>
+    <th>**************SCA**************</th>
+    <th>**************Container**************</th> 
+    <th>**************IaC**************</th>
   </tr>
 <tr>
 <td>
