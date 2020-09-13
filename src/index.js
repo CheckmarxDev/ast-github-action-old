@@ -107,23 +107,23 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
     }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
 
     const cargoLResults = cargoResults.filter(function(x) {
-        return x.almSeverity == 'Low';
+        return x.severity == 'Low';
     }).length
     const cargoMResults = cargoResults.filter(function(x) {
-        return x.almSeverity == 'Medium';
+        return x.severity == 'Medium';
     }).length
     const cargoHResults = cargoResults.filter(function(x) {
-        return x.almSeverity == 'High';
+        return x.severity == 'High';
     }).length
 
     const iceLResults = iceResults.filter(function(x) {
-        return x.almSeverity == 'LOW';
+        return x.severity == 'LOW';
     }).length
     const iceMResults = iceResults.filter(function(x) {
-        return x.almSeverity == 'MEDIUM';
+        return x.severity == 'MEDIUM';
     }).length
     const iceHResults = iceResults.filter(function(x) {
-        return x.almSeverity == 'HIGH';
+        return x.severity == 'HIGH';
     }).length
 
     let hTotal=sastResultsBySeverity.HIGH + cargoHResults.HIGH + iceHResults.HIGH;
