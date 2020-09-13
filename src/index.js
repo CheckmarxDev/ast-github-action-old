@@ -106,19 +106,29 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
         return a;
     }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
 
-    const cargoResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
-        a[r.severity] = r.counter;
-        return a;
-    }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
+    const cargoLResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'Low';
+    }).length
+    const cargoMResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'Medium';
+    }).length
+    const cargoHResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'High';
+    }).length
 
-    const iceResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
-        a[r.severity] = r.counter;
-        return a;
-    }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
+    const iceLResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'LOW';
+    }).length
+    const iceMResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'MEDIUM';
+    }).length
+    const iceHResults = cargoResults.filter(function(x) {
+        return x.almSeverity == 'HIGH';
+    }).length
 
-    let hTotal=sastResultsBySeverity.HIGH + cargoResultsBySeverity.HIGH + iceResultsBySeverity.HIGH;
-    let mTotal=sastResultsBySeverity.MEDIUM + cargoResultsBySeverity.MEDIUM + iceResultsBySeverity.MEDIUM;
-    let lTotal=sastResultsBySeverity.LOW + cargoResultsBySeverity.LOW + iceResultsBySeverity.LOW;
+    let hTotal=sastResultsBySeverity.HIGH + cargoHResults.HIGH + iceHResults.HIGH;
+    let mTotal=sastResultsBySeverity.MEDIUM + cargoMResults.MEDIUM + iceMResults.MEDIUM;
+    let lTotal=sastResultsBySeverity.LOW + cargoLResults.LOW + iceLResults.LOW;
 
     let succeed = true;
     let violations = 0;
@@ -173,17 +183,17 @@ ${succeed ? successHead : failureHead}`;
 </td>
 <td>
  ${resultsCargoCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${cargoResultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${cargoResultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${cargoResultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${cargoResultsBySeverity.INFO} Info <br>
+<img align='left' src='${resources.highIcon}'/>${cargoHResults} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${cargoMResults} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${cargoLResults} Low <br>
+<img align='left' src='${resources.infoIcon}'/>0 Info <br>
 </td>
 <td>
       ${resultsIceCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${iceResultsBySeverity.HIGH} High <br>
-<img align='left' src='${resources.mediumIcon}'/>${iceResultsBySeverity.MEDIUM} Medium <br>
-<img align='left' src='${resources.lowIcon}'/>${iceResultsBySeverity.LOW} Low <br>
-<img align='left' src='${resources.infoIcon}'/>${iceResultsBySeverity.INFO} Info <br>
+<img align='left' src='${resources.highIcon}'/>${iceHResults} High <br>
+<img align='left' src='${resources.mediumIcon}'/>${iceHResults} Medium <br>
+<img align='left' src='${resources.lowIcon}'/>${iceHResults} Low <br>
+<img align='left' src='${resources.infoIcon}'/>0 Info <br>
 </td>
   </tr>
 </table>
