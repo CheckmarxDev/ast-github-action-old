@@ -164,42 +164,42 @@ ${succeed ? successHead : failureHead}`;
     const text = `**${resultsSASTCount + resultsCargoCount + resultsIceCount} Vulnerabilities**<br>
     <table style="width:100%">
 <tr>
-    <th>**************SAST**************</th>
-    <th>**************SCA**************</th>
-    <th>**************Container**************</th> 
-    <th>**************IaC**************</th>
+    <th>SAST</th>
+    <th>SCA</th>
+    <th>Container</th> 
+    <th>IaC</th>
   </tr>
 <tr>
 <td>
-     ${resultsSASTCount} Vulnerabilities
+     ${resultsSASTCount} Vulnerabilities </br>
 
 
-<img align='left' src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High 
-<img align='left' src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium 
-<img align='left' src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low 
-<img align='left' src='${resources.infoIcon}'/>${sastResultsBySeverity.INFO} Info 
+<img  src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High </br>
+<img  src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium  </br>
+<img  src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low </br>
+<img  src='${resources.infoIcon}'/>${sastResultsBySeverity.INFO} Info </br>
 </td>
 <td>
      0 Vulnerabilities
-<img align='left' src='${resources.highIcon}'/>0 High 
-<img align='left' src='${resources.mediumIcon}'/>0 Medium 
-<img align='left' src='${resources.lowIcon}'/>0 Low 
-<img align='left' src='${resources.infoIcon}'/>0 Info 
+<img  src='${resources.highIcon}'/>0 High </br>
+<img  src='${resources.mediumIcon}'/>0 Medium </br>
+<img  src='${resources.lowIcon}'/>0 Low </br>
+<img  src='${resources.infoIcon}'/>0 Info </br>
 
 </td>
 <td>
  ${resultsCargoCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${cargoHResults} High 
-<img align='left' src='${resources.mediumIcon}'/>${cargoMResults} Medium 
-<img align='left' src='${resources.lowIcon}'/>${cargoLResults} Low 
-<img align='left' src='${resources.infoIcon}'/>0 Info 
+<img  src='${resources.highIcon}'/>${cargoHResults} High </br>
+<img  src='${resources.mediumIcon}'/>${cargoMResults} Medium </br>
+<img  src='${resources.lowIcon}'/>${cargoLResults} Low </br>
+<img  src='${resources.infoIcon}'/>0 Info </br>
 </td>
 <td>
       ${resultsIceCount} Vulnerabilities<br>
-<img align='left' src='${resources.highIcon}'/>${iceHResults} High 
-<img align='left' src='${resources.mediumIcon}'/>${iceMResults} Medium 
-<img align='left' src='${resources.lowIcon}'/>${iceLResults} Low 
-<img align='left' src='${resources.infoIcon}'/>0 Info 
+<img  src='${resources.highIcon}'/>${iceHResults} High </br>
+<img  src='${resources.mediumIcon}'/>${iceMResults} Medium </br>
+<img  src='${resources.lowIcon}'/>${iceLResults} Low </br>
+<img  src='${resources.infoIcon}'/>0 Info </br>
 </td>
   </tr>
 </table>
