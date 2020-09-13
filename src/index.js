@@ -101,26 +101,40 @@ function getReportResources() {
 
 async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters }) {
     const startDate = new Date().toISOString();
-    const resultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
+    const sastResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
         return a;
     }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
 
+    const cargoResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
+        a[r.severity] = r.counter;
+        return a;
+    }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
+
+    const iceResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
+        a[r.severity] = r.counter;
+        return a;
+    }, { HIGH: 0, MEDIUM: 0, LOW: 0, INFO: 0 });
+
+    let hTotal=sastResultsBySeverity.HIGH + cargoResultsBySeverity.HIGH + iceResultsBySeverity.HIGH;
+    let mTotal=sastResultsBySeverity.MEDIUM + cargoResultsBySeverity.MEDIUM + iceResultsBySeverity.MEDIUM;
+    let lTotal=sastResultsBySeverity.LOW + cargoResultsBySeverity.LOW + iceResultsBySeverity.LOW;
+
     let succeed = true;
     let violations = 0;
-    if (inputs.highResultsThreshold > -1 && resultsBySeverity.HIGH > inputs.highResultsThreshold) {
+    if (inputs.highResultsThreshold > -1 && hTotal > inputs.highResultsThreshold) {
         succeed = false;
-        violations += resultsBySeverity.HIGH - inputs.highResultsThreshold;
+        violations += hTotal - inputs.highResultsThreshold;
     }
 
-    if (inputs.mediumResultsThreshold > -1 && resultsBySeverity.MEDIUM > inputs.mediumResultsThreshold) {
+    if (inputs.mediumResultsThreshold > -1 && mTotal > inputs.mediumResultsThreshold) {
         succeed = false;
-        violations += resultsBySeverity.MEDIUM - inputs.mediumResultsThreshold;
+        violations += mTotal - inputs.mediumResultsThreshold;
     }
 
-    if (inputs.lowResultsThreshold > -1 && resultsBySeverity.LOW > inputs.lowResultsThreshold) {
+    if (inputs.lowResultsThreshold > -1 && lTotal > inputs.lowResultsThreshold) {
         succeed = false;
-        violations += resultsBySeverity.LOW - inputs.lowResultsThreshold;
+        violations += lTotal - inputs.lowResultsThreshold;
     }
 
     const title = `AST Scan ID #${scanID}`;
@@ -131,13 +145,13 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
     const summary =
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
-    const text = `**${resultsSASTCount + resultsCargoCount} Vulnerabilities**<br>
+    const text = `**${resultsSASTCount + resultsCargoCount + resultsIceCount} Vulnerabilities**<br>
     <table style="width:100%">
 <tr>
-    <th>SAST                    </th>
-    <th>SCA                    </th>
-    <th>Container                    </th> 
-    <th>IaC                    </th>
+    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SAST&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SCA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Container&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th> 
+    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IaC&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
   </tr>
 <tr>
 <td>
@@ -165,7 +179,7 @@ ${succeed ? successHead : failureHead}`;
 <img align='left' src='${resources.infoIcon}'/>${resultsBySeverity.INFO} Info <br>
 </td>
 <td>
-      ${resultsSASTCount} Vulnerabilities<br>
+      ${resultsIceCount} Vulnerabilities<br>
 <img align='left' src='${resources.highIcon}'/>${resultsBySeverity.HIGH} High <br>
 <img align='left' src='${resources.mediumIcon}'/>${resultsBySeverity.MEDIUM} Medium <br>
 <img align='left' src='${resources.lowIcon}'/>${resultsBySeverity.LOW} Low <br>
