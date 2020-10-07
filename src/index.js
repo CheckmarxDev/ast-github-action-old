@@ -69,7 +69,7 @@ async function createScan() {
         scanID: scan.id,
         results: results.results,
         resultsTotalCount: results.totalCount,
-        resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
+        resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results?scan-id=${scan.id}`),
         resultsSeverityCounters: scanSummary.severityCounters,
     };
 }
@@ -87,7 +87,6 @@ function getReportResources() {
 }
 
 async function writeScanReport({ scanID, results, resultsTotalCount, resultsURI, resultsSeverityCounters }) {
-    const startDate = new Date().toISOString();
     const resultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
         return a;
@@ -144,7 +143,6 @@ ${succeed ? successHead : failureHead}`;
             name: 'Checkmarx scan results',
             head_sha: context.githubCommitHash,
             status: 'in_progress',
-            started_at: startDate,
             completed_at: new Date().toISOString(),
             conclusion: succeed ? 'success' : 'failure',
             output: {
