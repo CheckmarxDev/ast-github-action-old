@@ -134,7 +134,7 @@ class Ast {
                             resolve();
                         }
 
-                        if (['Failed', 'Canceled '].includes(scan.status)) {
+                        if (['Failed', 'Canceled'].includes(scan.status)) {
                             reject(new Error(`Scan was ${scan.status}`));
                         }
                     } catch(e) {
