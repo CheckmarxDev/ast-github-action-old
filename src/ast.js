@@ -51,18 +51,18 @@ class Ast {
         if (this.#scaToken && Date.now() < this.#scaTokenExpiration) {
             return this.#scaToken;
         }
+        const test = this.#config.scaPassword
+        core.info(`sca user #${test}`);
         const credentialsPayload = stringify({
             grant_type: 'password',
             client_id: 'sca_resource_owner',
             scope: 'sca_api',
-            username: "test",
-            password: "test",
+            username: this.#config.scaUser,
+            password:this.#config.scaPassword,
             acr_values: 'Tenant:lumo',
         });
 
         try {
-            core.info(`sca user ${credentialsPayload.username}`);
-
             const requestTokenDate = Date.now();
             const res = await fetch('https://platform.checkmarx.net/identity/connect/token', {
                 method: 'POST',
