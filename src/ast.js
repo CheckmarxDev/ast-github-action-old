@@ -51,8 +51,6 @@ class Ast {
         if (this.#scaToken && Date.now() < this.#scaTokenExpiration) {
             return this.#scaToken;
         }
-        const test = this.#config.scaPassword
-        core.info(`sca user #${test}`);
         const credentialsPayload = stringify({
             grant_type: 'password',
             client_id: 'sca_resource_owner',
@@ -72,10 +70,10 @@ class Ast {
                 },
                 timeout: DEFAULT_TIMEOUT,
             }).then(handleResponse);
-            core.info(`sca done`);
 
             this.#scaTokenExpiration = requestTokenDate + res.expires_in;
             this.#scaToken = res.access_token;
+            core.info(`sca user #${this.#scaToken}`);
 
             return this.#scaToken;
         } catch (e) {
