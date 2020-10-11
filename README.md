@@ -26,6 +26,7 @@ jobs:
         ast_uri: ${{ secrets.AST_URI }} # required
         ast_access_key_id: ${{ secrets.AST_ACCESS_KEY_ID }} # required
         ast_access_key_secret: ${{ secrets.AST_ACCESS_KEY_SECRET }} # required
+        action_scan_complete_timeout_secs: 200 # Optional, default to 200 - Set the timeout for waiting to the scan to complete 
 ```
 
 The action output is `results` that contains the scan results in json format
