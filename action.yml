@@ -8,6 +8,12 @@ inputs:
   ast_authentication_uri:
     description: 'AST authentication uri'
     required: true
+  sca_user:
+    description: 'sca user'
+    required: true
+  sca_password:
+    description: 'sca password'
+    required: true
   ast_access_key_id:
     description: 'AST access key id'
     required: true
