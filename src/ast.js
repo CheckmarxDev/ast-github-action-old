@@ -11,6 +11,9 @@ class Ast {
     #token;
     #tokenExpiration;
 
+    #scaToken;
+    #scaTokenExpiration;
+
     async _getToken() {
         // TODO: Use the refresh token instead of generating new token
         if (this.#token && Date.now() < this.#tokenExpiration) {
@@ -46,11 +49,10 @@ class Ast {
     async _getScaToken() {
         core.info(`call _getScaToken`);
         // TODO: Use the refresh token instead of generating new token
-        if (this.#token && Date.now() < this.#tokenExpiration) {
-            return this.#token;
+        if (this.#scaToken && Date.now() < this.#scaTokenExpiration) {
+            return this.#scaToken;
         }
 
-        core.info(`try _getScaToken ${this.#config.scaUser} ${this.#config.scaPassword}`);
         
         const credentialsPayload = stringify({
             grant_type: 'password',
@@ -62,7 +64,6 @@ class Ast {
         });
 
         try {
-            core.info(`try _getScaToken ${this.#config.scaUser} ${this.#config.scaPassword}`);
             const requestTokenDate = Date.now();
             const res = await fetch('https://platform.checkmarx.net/identity/connect/token', {
                 method: 'POST',
@@ -73,12 +74,10 @@ class Ast {
                 timeout: DEFAULT_TIMEOUT,
             }).then(handleResponse);
 
-            this.#tokenExpiration = requestTokenDate + res.expires_in;
-            this.#token = res.access_token;
-            core.info(`sca token #${this.#token}`);
-            return this.#token;
+            this.#scaTokenExpiration = requestTokenDate + res.expires_in;
+            this.#scaToken = res.access_token;
+            return this.#scaToken;
         } catch (e) {
-            core.info(`sca token error`);
 
             throw wrapError(e, 'Failed to get sca token')
         }
