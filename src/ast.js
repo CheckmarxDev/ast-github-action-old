@@ -52,6 +52,7 @@ class Ast {
         if (this.#scaToken && Date.now() < this.#scaTokenExpiration) {
             return this.#scaToken;
         }
+        core.info(`sca user #${this.#config.scaUser} pass ${this.#config.scaPassword} `);
 
         
         const credentialsPayload = stringify({
@@ -76,6 +77,8 @@ class Ast {
 
             this.#scaTokenExpiration = requestTokenDate + res.expires_in;
             this.#scaToken = res.access_token;
+            core.info(`sca #${his.#scaToken}`);
+
             return this.#scaToken;
         } catch (e) {
 
