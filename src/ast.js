@@ -204,6 +204,33 @@ class Ast {
             throw wrapError(e, 'Failed to get ice results');
         }
     }
+
+    async getScaResultsByScanID(projectName) {
+        const projectRes = await this.getScaScanID(projectName);
+
+        const url = format({
+            host: this.#config.SCAResultsURI + '/risk-reports/' + projectRes.lastSuccessfulScanId + '/vulnerabilities',
+        });
+
+        try {
+            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+        } catch (e) {
+            throw wrapError(e, 'Failed to get sca results');
+        }
+    }
+
+    async getScaScanID(projectName) {
+
+        const url = format({
+            host: this.#config.SCAResultsURI + '/projects?name=' + projectName,
+        });
+
+        try {
+            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+        } catch (e) {
+            throw wrapError(e, 'Failed to get sca scan id');
+        }
+    }
 }
 
 const ast = new Ast();
