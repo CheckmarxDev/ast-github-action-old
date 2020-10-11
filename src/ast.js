@@ -36,6 +36,8 @@ class Ast {
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
+            core.info(`ast token #${this.#token}`);
+
             return this.#token;
         } catch (e) {
             throw wrapError(e, 'Failed to get ast token')
@@ -59,7 +61,7 @@ class Ast {
         });
 
         try {
-            core.info(`try _getScaToken`);
+            core.info(`try _getScaToken ${this.#config.scaUser} ${this.#config.scaPassword}`);
             const requestTokenDate = Date.now();
             const res = await fetch('https://platform.checkmarx.net/identity/connect/token', {
                 method: 'POST',
