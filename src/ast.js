@@ -1,4 +1,5 @@
 const fetch = require('node-fetch');
+const core = require('@actions/core');
 const { stringify } = require('querystring');
 const { wrapError, timeout, handleResponse } = require('./utils');
 const { format } = require('url');
@@ -42,6 +43,7 @@ class Ast {
     }
 
     async _getScaToken() {
+        core.info(`call _getScaToken`);
         // TODO: Use the refresh token instead of generating new token
         if (this.#token && Date.now() < this.#tokenExpiration) {
             return this.#token;
@@ -69,7 +71,7 @@ class Ast {
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
-            console.log(this.#token)
+            core.info(`sca token #${this.#token}`);
             return this.#token;
         } catch (e) {
             throw wrapError(e, 'Failed to get sca token')
