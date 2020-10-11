@@ -47,6 +47,7 @@ const constants = {
     astCargoResultsURI: joinURLs(inputs.astUri, 'api/cargo/results'),
     astIceResultsURI: joinURLs(inputs.astUri, 'api/ice/results'),
     astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
+    SCAResultsURI: 'https://api-sca.checkmarx.net/risk-management',
 };
 
 const config = Object.assign({}, context, inputs, constants);
@@ -63,16 +64,18 @@ async function createScan() {
     await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
-    const [scanSummary, results, cargoResults, iceResults] = await Promise.all([
+    const [scanSummary, results, cargoResults, iceResults, scaResults] = await Promise.all([
         ast.getScanSummaryByScanID(scan.id),
         ast.getResultsByScanID(scan.id, 50), // 50 is the annotation limit in github
         ast.getCargoResultsByScanID(scan.id), // 50 is the annotation limit in github
         ast.getIceResultsByScanID(scan.id), 
-
+        ast.getScaResultsByScanID(projectID)
     ]);
     core.setOutput('results', results);
     core.info(`cargoResults total ${cargoResults.length}`);
     core.info(`iceResults total ${iceResults.length}`);
+    core.info(`scaResults total ${scaResults.length}`);
+
 
     return {
         scanID: scan.id,
