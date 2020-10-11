@@ -59,6 +59,7 @@ class Ast {
         });
 
         try {
+            core.info(`try _getScaToken`);
             const requestTokenDate = Date.now();
             const res = await fetch('https://platform.checkmarx.net/identity/connect/token', {
                 method: 'POST',
@@ -68,6 +69,7 @@ class Ast {
                 },
                 timeout: DEFAULT_TIMEOUT,
             }).then(handleResponse);
+            core.info('_getScaToken res:' + res);
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
