@@ -89,6 +89,8 @@ async function createScan() {
         resultsIceCount: iceResults.length,
         resultsURI: joinURLs(inputs.astUri, `#/projects/${projectID}/results`),
         resultsSeverityCounters: scanSummary.severityCounters,
+        scaResults: scaResults,
+        resultsSCACount: scaResults.length,
     };
 }
 
@@ -104,7 +106,7 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters }) {
+async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters, scaResults, resultsSCACount}) {
     const startDate = new Date().toISOString();
     const sastResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
@@ -131,9 +133,19 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
         return x.severity == 'HIGH';
     }).length
 
-    let hTotal=sastResultsBySeverity.HIGH + cargoHResults + iceHResults;
-    let mTotal=sastResultsBySeverity.MEDIUM + cargoMResults + iceMResults;
-    let lTotal=sastResultsBySeverity.LOW + cargoLResults + iceLResults;
+    const scaLResults = scaResults.filter(function(x) {
+        return x.severity == 'Low';
+    }).length
+    const scaMResults = scaResults.filter(function(x) {
+        return x.severity == 'Medium';
+    }).length
+    const scaHResults = scaResults.filter(function(x) {
+        return x.severity == 'High';
+    }).length
+
+    let hTotal=sastResultsBySeverity.HIGH + cargoHResults + iceHResults + scaHResults;
+    let mTotal=sastResultsBySeverity.MEDIUM + cargoMResults + iceMResults + scaMResults;
+    let lTotal=sastResultsBySeverity.LOW + cargoLResults + iceLResults + scaLResults;
 
     core.info(`hTotal #${hTotal}`);
     core.info(`mTotal #${mTotal}`);
@@ -179,7 +191,7 @@ ${succeed ? successHead : failureHead}`;
 ${resultsSASTCount} Vulnerabilities 
 </td>
 <td>
-0 Vulnerabilities 
+${resultsSCACount} Vulnerabilities 
 </td>
 <td>
 ${resultsCargoCount} Vulnerabilities 
@@ -194,7 +206,7 @@ ${resultsIceCount} Vulnerabilities
 <img  src='${resources.highIcon}'/>${sastResultsBySeverity.HIGH} High 
 </td>
 <td>
-<img  src='${resources.highIcon}'/>0 High 
+<img  src='${resources.highIcon}'/>${scaHResults} High 
 </td>
 <td>
 <img  src='${resources.highIcon}'/>${cargoHResults} High </br>
@@ -209,7 +221,7 @@ ${resultsIceCount} Vulnerabilities
 <img  src='${resources.mediumIcon}'/>${sastResultsBySeverity.MEDIUM} Medium 
 </td>
 <td>
-<img  src='${resources.mediumIcon}'/>0 Medium 
+<img  src='${resources.mediumIcon}'/>${scaMResults} Medium 
 </td>
 <td>
 <img  src='${resources.mediumIcon}'/>${cargoMResults} Medium </br>
@@ -224,7 +236,7 @@ ${resultsIceCount} Vulnerabilities
 <img  src='${resources.lowIcon}'/>${sastResultsBySeverity.LOW} Low 
 </td>
 <td>
-<img  src='${resources.lowIcon}'/>0 Low 
+<img  src='${resources.lowIcon}'/>${scaLResults} Low 
 </td>
 <td>
 <img  src='${resources.lowIcon}'/>${cargoLResults} Low </br>
