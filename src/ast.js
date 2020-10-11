@@ -69,13 +69,14 @@ class Ast {
                 },
                 timeout: DEFAULT_TIMEOUT,
             }).then(handleResponse);
-            core.info('_getScaToken res:' + res);
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
             core.info(`sca token #${this.#token}`);
             return this.#token;
         } catch (e) {
+            core.info(`sca token error`);
+
             throw wrapError(e, 'Failed to get sca token')
         }
     }
