@@ -33,6 +33,8 @@ const inputs = {
     astUri: core.getInput('ast_uri', { required: true }),
     astAccessKeyId: core.getInput('ast_access_key_id', { required: true }),
     astAccessKeySecret: core.getInput('ast_access_key_secret', { required: true }),
+    scaUser: core.getInput('sca_user', { required: true }),
+    scaPassword: core.getInput('sca_password', { required: true }),
     githubRepoToken: core.getInput('github_repo_token', { required: true }),
     actionScanCompleteTimeoutSecs: core.getInput('action_scan_complete_timeout_secs', { required: true }),
     highResultsThreshold: core.getInput('high_results_threshold', { required: true }),
