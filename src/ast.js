@@ -36,7 +36,6 @@ class Ast {
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
-            core.info(`ast token #${this.#token}`);
 
             return this.#token;
         } catch (e) {
@@ -51,6 +50,8 @@ class Ast {
             return this.#token;
         }
 
+        core.info(`try _getScaToken ${this.#config.scaUser} ${this.#config.scaPassword}`);
+        
         const credentialsPayload = stringify({
             grant_type: 'password',
             client_id: 'sca_resource_owner',
