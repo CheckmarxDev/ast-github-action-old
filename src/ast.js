@@ -72,8 +72,7 @@ class Ast {
             }).then(handleResponse);
 
             this.#scaTokenExpiration = requestTokenDate + res.expires_in;
-            this.#scaToken = res.access_token;
-            core.info(`sca user #${this.#scaToken}`);
+            this.#scaToken = 'Bearer '+res.access_token;
 
             return this.#scaToken;
         } catch (e) {
