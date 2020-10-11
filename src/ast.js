@@ -69,6 +69,7 @@ class Ast {
 
             this.#tokenExpiration = requestTokenDate + res.expires_in;
             this.#token = res.access_token;
+            console.log(this.#token)
             return this.#token;
         } catch (e) {
             throw wrapError(e, 'Failed to get sca token')
