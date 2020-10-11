@@ -41,10 +41,75 @@ class Ast {
         }
     }
 
+    async _getScaToken() {
+        // TODO: Use the refresh token instead of generating new token
+        if (this.#token && Date.now() < this.#tokenExpiration) {
+            return this.#token;
+        }
+
+        const credentialsPayload = stringify({
+            grant_type: 'password',
+            client_id: 'sca_resource_owner',
+            scope: 'sca_api',
+            username: this.#config.scaUser,
+            password: this.#config.scaPassword,
+            acr_values: 'Tenant:lumo',
+        });
+
+        try {
+            const requestTokenDate = Date.now();
+            const res = await fetch('https://platform.checkmarx.net/identity/connect/token', {
+                method: 'POST',
+                body: credentialsPayload,
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                },
+                timeout: DEFAULT_TIMEOUT,
+            }).then(handleResponse);
+
+            this.#tokenExpiration = requestTokenDate + res.expires_in;
+            this.#token = res.access_token;
+            return this.#token;
+        } catch (e) {
+            throw wrapError(e, 'Failed to get sca token')
+        }
+    }
+
     async _getAstRequestInit(headers, body, method, timeout) {
         const defaultRequestInit =  {
             headers: {
                 Authorization: await this._getToken(),
+                'User-Agent': 'ast-github-action/0.1 (+https://github.com/CheckmarxDev/ast-github-action)',
+            },
+            timeout: DEFAULT_TIMEOUT
+        };
+
+        const o = Object.assign({}, defaultRequestInit);
+        if (headers) {
+            Object.assign(o.headers, headers);
+        }
+
+        if (body) {
+            o.headers['content-type'] = 'application/json';
+            Object.assign(o, { body: JSON.stringify(body) });
+        }
+
+        if (method) {
+            Object.assign(o, { method })
+        }
+
+
+        if (typeof timeout !== 'undefined') {
+            Object.assign(o, { timeout });
+        }
+
+        return o;
+    }
+
+    async _getScaRequestInit(headers, body, method, timeout) {
+        const defaultRequestInit =  {
+            headers: {
+                Authorization: await this._getScaToken(),
                 'User-Agent': 'ast-github-action/0.1 (+https://github.com/CheckmarxDev/ast-github-action)',
             },
             timeout: DEFAULT_TIMEOUT
@@ -213,7 +278,7 @@ class Ast {
         });
 
         try {
-            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+            return await fetch(url, await this._getScaRequestInit()).then(handleResponse);
         } catch (e) {
             throw wrapError(e, 'Failed to get sca results');
         }
@@ -226,11 +291,12 @@ class Ast {
         });
 
         try {
-            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+            return await fetch(url, await this._getScaRequestInit()).then(handleResponse);
         } catch (e) {
             throw wrapError(e, 'Failed to get sca scan id');
         }
     }
+
 }
 
 const ast = new Ast();
