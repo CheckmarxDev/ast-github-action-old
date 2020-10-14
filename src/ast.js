@@ -264,6 +264,18 @@ class Ast {
         }
     }
 
+    async getMashupResultsByScanID(scanID) {
+        const url = format({
+            host: this.#config.astMashupResultsURI + '/' + scanID,
+        });
+
+        try {
+            return await fetch(url, await this._getAstRequestInit()).then(handleResponse);
+        } catch (e) {
+            throw wrapError(e, 'Failed to get cargo results');
+        }
+    } 
+
     async getIceResultsByScanID(scanID) {
         const url = format({
             host: this.#config.astIceResultsURI + '/' + scanID,

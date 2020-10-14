@@ -47,6 +47,7 @@ const constants = {
     astScansURI: joinURLs(inputs.astUri, 'api/scans'),
     astResultsURI: joinURLs(inputs.astUri, 'api/results'),
     astCargoResultsURI: joinURLs(inputs.astUri, 'api/cargo/results'),
+    astMashupResultsURI: joinURLs(inputs.astUri, 'api/results-mesh/results'),
     astIceResultsURI: joinURLs(inputs.astUri, 'api/ice/results'),
     astScanSummaryURI: joinURLs(inputs.astUri, 'api/scan-summary'),
     SCAResultsURI: 'https://api-sca.checkmarx.net/risk-management',
@@ -66,12 +67,13 @@ async function createScan() {
     await ast.waitForScanToComplete(scan.id, inputs.actionScanCompleteTimeoutSecs * 1000);
     core.info(`Scan #${scan.id} completed after ${Date.now() - start} ms`);
 
-    const [scanSummary, results, cargoResults, iceResults, scaResults] = await Promise.all([
+    const [scanSummary, results, cargoResults, iceResults, scaResults, mashupResults] = await Promise.all([
         ast.getScanSummaryByScanID(scan.id),
         ast.getResultsByScanID(scan.id, 50), // 50 is the annotation limit in github
         ast.getCargoResultsByScanID(scan.id), // 50 is the annotation limit in github
         ast.getIceResultsByScanID(scan.id), 
-        ast.getScaResultsByScanID(projectID)
+        ast.getScaResultsByScanID(projectID),
+        ast.getMashupResultsByScanID(scan.id), 
     ]);
     core.setOutput('results', results);
     core.info(`cargoResults total ${cargoResults.length}`);
@@ -91,6 +93,8 @@ async function createScan() {
         resultsSeverityCounters: scanSummary.severityCounters,
         scaResults: scaResults,
         resultsSCACount: scaResults.length,
+        mashupResults: mashupResults,
+        resultsMashupCount:mashupResults.length
     };
 }
 
@@ -106,7 +110,7 @@ function getReportResources() {
     };
 }
 
-async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters, scaResults, resultsSCACount}) {
+async function writeScanReport({ scanID, results, cargoResults, iceResults, resultsSASTCount, resultsCargoCount,resultsIceCount, resultsURI, resultsSeverityCounters, scaResults, resultsSCACount, mashupResults, resultsMashupCount}) {
     const startDate = new Date().toISOString();
     const sastResultsBySeverity = resultsSeverityCounters.reduce((a, r) => {
         a[r.severity] = r.counter;
@@ -143,9 +147,20 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
         return x.severity == 'High';
     }).length
 
-    let hTotal=sastResultsBySeverity.HIGH + cargoHResults + iceHResults + scaHResults;
-    let mTotal=sastResultsBySeverity.MEDIUM + cargoMResults + iceMResults + scaMResults;
-    let lTotal=sastResultsBySeverity.LOW + cargoLResults + iceLResults + scaLResults;
+    
+    const mashupLResults = mashupResults.filter(function(x) {
+        return x.severity == 'LOW';
+    }).length
+    const mashupMResults = mashupResults.filter(function(x) {
+        return x.severity == 'MEDIUM';
+    }).length
+    const mashupHResults = mashupResults.filter(function(x) {
+        return x.severity == 'HIGH';
+    }).length
+
+    let hTotal=sastResultsBySeverity.HIGH + cargoHResults + iceHResults + scaHResults + mashupHResults;
+    let mTotal=sastResultsBySeverity.MEDIUM + cargoMResults + iceMResults + scaMResults + mashupMResults;
+    let lTotal=sastResultsBySeverity.LOW + cargoLResults + iceLResults + scaLResults + mashupLResults;
 
     core.info(`hTotal #${hTotal}`);
     core.info(`mTotal #${mTotal}`);
@@ -185,6 +200,7 @@ ${succeed ? successHead : failureHead}`;
     <th>SCA</th>
     <th>Container</th> 
     <th>IaC</th>
+    <th>Mashup</th>
   </tr>
 <tr>
 <td>
@@ -199,6 +215,9 @@ ${resultsCargoCount} Vulnerabilities
 <td>
 ${resultsIceCount} Vulnerabilities 
 </td>  
+<td>
+${resultsMashupCount} Vulnerabilities 
+</td> 
 </tr>
 
 <tr>
@@ -213,6 +232,9 @@ ${resultsIceCount} Vulnerabilities
 </td>
 <td>
 <img  src='${resources.highIcon}'/>${iceHResults} High </br>
+</td>  
+<td>
+<img  src='${resources.highIcon}'/>${mashupHResults} High </br>
 </td>  
 </tr>
 
@@ -229,6 +251,9 @@ ${resultsIceCount} Vulnerabilities
 <td>
 <img  src='${resources.mediumIcon}'/>${iceMResults} Medium </br>
 </td>  
+<td>
+<img  src='${resources.mediumIcon}'/>${mashupMResults} Medium </br>
+</td>  
 </tr>
 
 <tr>
@@ -243,7 +268,10 @@ ${resultsIceCount} Vulnerabilities
 </td>
 <td>
 <img  src='${resources.lowIcon}'/>${iceLResults} Low </br>
-</td>  
+</td>
+<td>
+<img  src='${resources.lowIcon}'/>${mashupLResults} Low </br>
+</td>   
 </tr>
 
 <tr>
@@ -258,7 +286,10 @@ ${resultsIceCount} Vulnerabilities
 </td>
 <td>
 <img  src='${resources.infoIcon}'/>0 Info </br>
-</td>  
+</td> 
+<td>
+<img  src='${resources.infoIcon}'/>0 Info </br>
+</td> 
 </tr>
 
 </table>
