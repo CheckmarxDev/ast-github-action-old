@@ -5,6 +5,8 @@ const ast = init({
     astAuthenticationUri: '',
     astAccessKeyId: '',
     astAccessKeySecret: '',
+    scaUser: '',
+    scaPassword: '',
     astScansURI: '',
     astResultsURI: '',
     astScanSummaryURI: '',
