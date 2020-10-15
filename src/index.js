@@ -328,11 +328,7 @@ ${resultsMashupCount} Vulnerabilities
                 // text: 'Roses are Red, <br> Violets are Blue <br><br> Sql Injection on line 32.<br><br> :heart: :rose:',
                 annotations,
             },
-            actions: [{
-                label: 'Generate Issues',
-                description: 'Generate GitHub issues',
-                identifier: 'generate-issues',
-            }]
+            actions: []
         });
     } catch (e) {
         throw wrapError(e, 'Failed to report scan results');
