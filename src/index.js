@@ -166,7 +166,12 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
     core.info(`mTotal #${mTotal}`);
     core.info(`lTotal #${lTotal}`);
 
-
+ core.info(`resultsSASTCount #${resultsSASTCount}`);
+ core.info(`resultsCargoCount #${resultsCargoCount}`);
+ core.info(`resultsIceCount #${resultsIceCount}`);
+ core.info(`resultsSCACount #${resultsSCACount}`);
+ core.info(`resultsMashupCount #${resultsMashupCount}`);
+    
 
     let succeed = true;
     let violations = 0;
