@@ -193,7 +193,7 @@ async function writeScanReport({ scanID, results, cargoResults, iceResults, resu
     const summary =
         `![](${resources.logoIcon}) <br><br> \
 ${succeed ? successHead : failureHead}`;
-    const text = `**${resultsSASTCount + resultsCargoCount + resultsIceCount} Vulnerabilities**<br>
+    const text = `**${resultsSASTCount + resultsCargoCount + resultsIceCount + resultsSCACount + resultsMashupCount} Vulnerabilities**<br>
     <table style="width:100%">
 <tr>
     <th>SAST</th>
