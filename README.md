@@ -30,3 +30,4 @@ jobs:
 ```
 
 The action output is `results` that contains the scan results in json format
+temp
